@@ -25,3 +25,7 @@ body {
   background-color: black;
   transition: background-color 0s;
 }
+
+.grid-box-active {
+  background-color: black;
+}
