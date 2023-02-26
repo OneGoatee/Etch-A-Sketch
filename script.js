@@ -48,13 +48,18 @@ function setGridBoxesDimensions() {
   });
 }
 
-function toggleBoxActiveState(e) {
-  e.target.classList.toggle('grid-box-active');
+function addBoxActiveState(e) {
+  let min = 0;
+  let max = 255;
+
+  e.target.classList.add('grid-box-active');
+
+  e.target.style.backgroundColor = `rgb(${Math.random() * (max - min) + min}, ${Math.random() * (max - min) + min}, ${Math.random() * (max - min) + min})`;
 }
 
 function activateClickedGridBox() {
   gridBoxes.forEach(e => {
-    e.addEventListener('click', toggleBoxActiveState);
+    e.addEventListener('mouseover', addBoxActiveState);
   });
 }
 
