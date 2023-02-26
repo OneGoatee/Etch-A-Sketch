@@ -1,40 +1,75 @@
 const container = document.querySelector('.container');
 const gridBox = document.createElement('div');
-const gridSize = 16;
-const totalGridBoxes = Math.pow(gridSize, 2);
-const gridBoxWidth = container.offsetWidth / gridSize;
-const gridBoxHeight = gridBoxWidth;
+const gridSizeButton = document.querySelector('.grid-size-btn');
+
+let gridBoxes = null;
+let gridSize;
+let gridMaxSize = 64;
+let totalGridBoxes;
+let gridBoxWidth;
+let gridBoxHeight;
 
 gridBox.className = 'grid-box';
 
-// Function to add the Grid Boxes to the container
-function addGridBoxes(gridSize, targetElement) {
-  // Appends first Gird Box to the container
+function getGridSizeFromUser() {
+  let userSelection = prompt('Type your Grid Size (Max: 64)');
+
+  if (userSelection === null || userSelection === '') {
+    return;
+  } else if (userSelection > gridMaxSize) {
+    alert('Invalid Grid Size (Max Size: 64)');
+    return;
+  }
+
+  gridSize = userSelection;
+  totalGridBoxes = Math.pow(gridSize, 2);
+  gridBoxWidth = container.offsetWidth / gridSize;
+  gridBoxHeight = gridBoxWidth;
+}
+
+function addGridBoxes(targetElement) {
+  if (totalGridBoxes === undefined || totalGridBoxes === 0) {
+    return;
+  }
+
   targetElement.appendChild(gridBox);
 
-  // Clone the original Grid Box to complete the grid based on the Grid Size
   for (let i = 0; i < totalGridBoxes - 1; i++) {
     targetElement.appendChild(gridBox.cloneNode(true));
   }
 }
 
-// Function to Toggle the Gid Box Active state when clicked
+function setGridBoxesDimensions() {
+  gridBoxes = document.querySelectorAll('.grid-box');
+
+  gridBoxes.forEach(e => {
+    e.style.width = `${gridBoxWidth}px`;
+    e.style.height = `${gridBoxHeight}px`;
+  });
+}
+
 function toggleBoxActiveState(e) {
   e.target.classList.toggle('grid-box-active');
 }
 
-function setGridBoxesDimensions(e) {
-  e.style.width = `${gridBoxWidth}px`;
-  e.style.height = `${gridBoxHeight}px`;
+function activateClickedGridBox() {
+  gridBoxes.forEach(e => {
+    e.addEventListener('click', toggleBoxActiveState);
+  });
 }
 
-addGridBoxes(gridSize, container);
+function clearGrid() {
+  while (container.firstChild) {
+    container.removeChild(container.lastChild);
+  }
+}
 
-const gridBoxes = document.querySelectorAll('.grid-box');
+function generateGrid() {
+  clearGrid();
+  getGridSizeFromUser();
+  addGridBoxes(container);
+  setGridBoxesDimensions();
+  activateClickedGridBox();
+}
 
-gridBoxes.forEach(e => {
-  setGridBoxesDimensions(e);
-  e.addEventListener('click', toggleBoxActiveState);
-});
-
-console.log('Width:', gridBoxWidth, 'Height:', gridBoxHeight);
+gridSizeButton.addEventListener('click', generateGrid);
