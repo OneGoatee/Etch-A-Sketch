@@ -14,6 +14,14 @@ function addGridBoxes(gridSize, targetElement) {
   }
 }
 
-// addGridBoxes(gridSize, container);
+function toggleBoxActiveState(e) {
+  e.target.classList.toggle('grid-box-active');
+}
 
 addGridBoxes(gridSize, container);
+
+const gridBoxes = document.querySelectorAll('.grid-box');
+
+gridBoxes.forEach(e => {
+  e.addEventListener('click', toggleBoxActiveState);
+});
