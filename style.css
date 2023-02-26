@@ -18,4 +18,10 @@ body {
   height: 35px;
   border: solid 1px white;
   background-color: rgba(252, 252, 252, 0.8);
+  transition: background-color 0.8s;
+}
+
+.grid-box:hover {
+  background-color: black;
+  transition: background-color 0s;
 }
